@@ -1,0 +1,16 @@
+body {
+    background-color: rgb(19, 92, 156);
+    color: white;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+a {
+  text-decoration: none;
+  color: rgb(255, 255, 255);
+  transition: 0.4s;
+  padding: 3px;
+}
+
+a:hover{
+    color:rgb(7, 7, 8);
+}

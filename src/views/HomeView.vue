@@ -1,11 +1,11 @@
 <script setup lang="ts">
-
+    
 </script>
 
 <template>
-  <main>
-    
-  </main>
+  <div>
+    <h1>Legal</h1>
+  </div>
 </template>
 
 <style scoped>
