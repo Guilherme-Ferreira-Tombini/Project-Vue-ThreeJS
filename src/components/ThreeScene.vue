@@ -14,32 +14,44 @@ export default defineComponent({
 
     onMounted(() => {
       if (threeContainer.value) {
-        // Criação da cena
         const scene = new THREE.Scene();
         scene.background = new THREE.Color(0x135C9C);
 
-        // Criação da câmera
-        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        const width = threeContainer.value.clientWidth;
+        const height = threeContainer.value.clientHeight;
 
-        // Criação do renderizador
+        const camera = new THREE.PerspectiveCamera(75, width / height, 0.1, 1000);
+        camera.position.z = 5;
+
         const renderer = new THREE.WebGLRenderer();
-        renderer.setSize(threeContainer.value.clientWidth, threeContainer.value.clientHeight);
+        renderer.setSize(width, height);
         threeContainer.value.appendChild(renderer.domElement);
 
-        // Criação de um cubo
-        const geometry = new THREE.BoxGeometry();
-        const material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
-        const cube = new THREE.Mesh(geometry, material);
-        scene.add(cube);
+        // Adicionando sistema de partículas
+        const particlesGeometry = new THREE.BufferGeometry();
+        const particlesCount = 10000;
 
-        camera.position.z = 5;
+        const posArray = new Float32Array(particlesCount * 3);
+
+        for (let i = 0; i < particlesCount * 3; i++) {
+          posArray[i] = (Math.random() - 0.5) * 10;
+        }
+
+        particlesGeometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
+
+        const particlesMaterial = new THREE.PointsMaterial({
+          size: 0.005,
+          color: 0xffffff,
+        });
+
+        const particles = new THREE.Points(particlesGeometry, particlesMaterial);
+        scene.add(particles);
 
         // Função de animação
         const animate = function () {
           requestAnimationFrame(animate);
 
-          cube.rotation.x += 0.01;
-          cube.rotation.y += 0.01;
+          particles.rotation.y += 0.002;
 
           renderer.render(scene, camera);
         };
@@ -57,7 +69,8 @@ export default defineComponent({
 
 <style scoped>
 .three-container {
-  width: 50%;
-  height: 250px;
+  width: 100%;
+  height: 100vh;
+  position: relative;
 }
 </style>
